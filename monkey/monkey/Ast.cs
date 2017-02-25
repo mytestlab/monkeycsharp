@@ -97,6 +97,8 @@ namespace monkey
   {
     public Token Token { get; set; }
 
+    public IExpression ReturnValue { get; set; }
+
     public string TokenLiteral()
     {
       return Token.Literal;
@@ -106,12 +108,92 @@ namespace monkey
     {
       var buffer = new StringBuilder();
 
+      buffer.Append(TokenLiteral() + " ");
+      if (ReturnValue != null)
+      {
+        buffer.Append(ReturnValue.ComposeString());
+      }
+      buffer.Append(";");
 
-
-      return buffer;
+      return buffer.ToString();
     }
 
     public void StatementNode()
+    {
+      throw new NotImplementedException();
+    }
+  }
+
+  class ExpressionStatement : IStatement
+  {
+    public Token Token { get; set; }
+    public IExpression Expression { get; set; }
+
+    public string TokenLiteral()
+    {
+      return Token.Literal;
+    }
+
+    public string ComposeString()
+    {
+      if (Expression != null)
+      {
+        return Expression.ComposeString();
+      }
+
+      return string.Empty;
+    }
+
+    public void StatementNode()
+    {
+      throw new NotImplementedException();
+    }
+  }
+
+  class IntegerLiteral : IExpression
+  {
+    public Token Token { get; set; }
+    public int Value { get; set; }
+
+    public string TokenLiteral()
+    {
+      return Token.Literal;
+    }
+
+    public string ComposeString()
+    {
+      return Token.Literal;
+    }
+
+    public void ExpressionNode()
+    {
+    }
+  }
+
+  class PrefixExpression : IExpression
+  {
+    public Token Token { get; set; }
+    public string Operator { get; set; }
+    public IExpression Right { get; set; }
+
+    public string TokenLiteral()
+    {
+      return Token.Literal;
+    }
+
+    public string ComposeString()
+    {
+      var buffer = new StringBuilder();
+
+      buffer.Append("(");
+      buffer.Append(Operator);
+      buffer.Append(Right.ComposeString());
+      buffer.Append(")");
+
+      return buffer.ToString();
+    }
+
+    public void ExpressionNode()
     {
       throw new NotImplementedException();
     }
