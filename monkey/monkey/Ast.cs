@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace monkey
 {
-  interface INode
+  public interface INode
   {
     string TokenLiteral();
 
@@ -18,14 +18,14 @@ namespace monkey
     void StatementNode();
   }
 
-  interface IExpression : INode
+  public interface IExpression : INode
   {
     void ExpressionNode();
   }
 
   class AstProgram : INode
   {
-    private IList<IStatement> Statements { get; set; }
+    public IList<IStatement> Statements { get; set; }
 
     public string TokenLiteral()
     {
@@ -45,10 +45,10 @@ namespace monkey
     }
   }
 
-  class Identifier : INode
+  class Identifier : IExpression
   {
     public Token Token { get; set; }
-    public IExpression Value { get; set; }
+    public string Value { get; set; }
     public string TokenLiteral()
     {
       return Token.Literal;
@@ -56,7 +56,11 @@ namespace monkey
 
     public string ComposeString()
     {
-      return Value.ComposeString();
+      return Value;
+    }
+
+    public void ExpressionNode()
+    {      
     }
   }
 
@@ -195,7 +199,36 @@ namespace monkey
 
     public void ExpressionNode()
     {
-      throw new NotImplementedException();
+    }
+  }
+
+  class InfixExpression : IExpression
+  {
+    public Token Token { get; set; }
+    public IExpression Left { get; set; }
+    public string Operator { get; set; }
+    public IExpression Right { get; set; }
+
+    public string TokenLiteral()
+    {
+      return Token.Literal;
+    }
+
+    public string ComposeString()
+    {
+      var buffer = new StringBuilder();
+
+      buffer.Append("(");
+      buffer.Append(Left.ComposeString());
+      buffer.Append(" " + Operator + " ");
+      buffer.Append(Right.ComposeString());
+      buffer.Append(")");
+
+      return buffer.ToString();
+    }
+
+    public void ExpressionNode()
+    {
     }
   }
 }

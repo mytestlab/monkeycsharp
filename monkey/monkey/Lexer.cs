@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace monkey
 {
-  class Lexer
+  internal class Lexer
   {
     public string Input { get; set; }
     public int Position { get; set; }
