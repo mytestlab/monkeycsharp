@@ -21,7 +21,7 @@ namespace monkey
     public const string LBrace = "[";
     public const string RBrace = "]";
     public const string Lt = "<";
-    public const string Rt = ">";
+    public const string Gt = ">";
     public const string Function = "FUNCTION";
     public const string Let = "LET";
     public const string True = "TRUE";
@@ -59,7 +59,7 @@ namespace monkey
 
   class Token
   {
-    public TokenType Type { get; set; }
+    public string Type { get; set; }
     public string Literal { get; set; }
   }
 }
